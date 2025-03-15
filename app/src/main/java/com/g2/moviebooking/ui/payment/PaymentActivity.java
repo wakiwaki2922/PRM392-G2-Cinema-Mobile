@@ -63,7 +63,7 @@ public class PaymentActivity extends AppCompatActivity {
                     // Make sure this URL matches your intent filter scheme and host
                     ZaloPaySDK.getInstance().payOrder(PaymentActivity.this, token, "demozpdk://app", new PayOrderListener() {
                         @Override
-                        public void onPaymentSucceeded(String s, String s1, String s2) {
+                        public void onPaymentSucceeded(String transactionId, String transToken, String appTransID) {
                             Intent intent1 = new Intent(PaymentActivity.this, PaymentNotificationActivity.class);
                             intent1.putExtra("result", "Thanh toán thành công");
                             intent1.putExtra("total", "Bạn đã thanh toán " + totalFormatted);
@@ -71,15 +71,15 @@ public class PaymentActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onPaymentCanceled(String s, String s1) {
+                        public void onPaymentCanceled(String zpTransToken, String appTransID) {
                             Intent intent2 = new Intent(PaymentActivity.this, PaymentNotificationActivity.class);
                             intent2.putExtra("result",  "Thanh toán đã được hủy");
                             startActivity(intent2);
                         }
 
                         @Override
-                        public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-                            Log.e("ZaloPay Error", "Error: " + zaloPayError.toString() + " | " + s + " | " + s1);
+                        public void onPaymentError(ZaloPayError zaloPayError, String zpTransToken, String appTransID) {
+                            Log.e("ZaloPay Error", "Error: " + zaloPayError.toString() + " | " + zpTransToken + " | " + appTransID);
                             Intent intent3 = new Intent(PaymentActivity.this, PaymentNotificationActivity.class);
                             intent3.putExtra("result", "Lỗi thanh toán: " + zaloPayError.toString());
                             startActivity(intent3);
